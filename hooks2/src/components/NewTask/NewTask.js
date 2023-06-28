@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
+const FIREBASE_URL = process.env.REACT_APP_FIREBASE_KEY;
 const NewTask = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,16 +12,13 @@ const NewTask = (props) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        'https://react-http-6b4a6.firebaseio.com/tasks.json',
-        {
-          method: 'POST',
-          body: JSON.stringify({ text: taskText }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await fetch(`${FIREBASE_URL}tasks.json`, {
+        method: "POST",
+        body: JSON.stringify({ text: taskText }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Request failed!');
